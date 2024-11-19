@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import CartWidget from '../CartWidget/CartWidget';
 import logoImage from '../CartWidget/assets/logo.png';
 
+import { collection, getDocs, query, distinct } from "firebase/firestore";
+import { db } from "../../services/firebase/firebaseConfig";
+
 const NavbarComponent = () => {
   const [categorias, setCategorias] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -12,16 +15,17 @@ const NavbarComponent = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await fetch('https://fakestoreapi.com/products/categories');
-        if (!response.ok) {
-          throw new Error(`HTTP error! Estado: ${response.status}`);
-        }
-        const data = await response.json();
-        setCategorias(data);
+        const productosRef = collection(db, "productos");
+        const querySnapshot = await getDocs(productosRef);
+        const categoriasUnicas = Array.from(
+            new Set(querySnapshot.docs.map((doc) => doc.data().category))
+        );
+        setCategorias(categoriasUnicas);
         setCargando(false);
       } catch (e) {
-        setError('Error cargando los datos. Por favor, intentar nuevamente más tarde.');
-        setCargando(false);
+          console.error(e.message);
+          setError("Error cargando los datos. Por favor, intentar nuevamente más tarde.");
+          setCargando(false);
       }
     };
 
@@ -34,7 +38,7 @@ const NavbarComponent = () => {
   return (
     <Navbar bg="light" expand="lg" className="mb-3">
       <Container>
-        <Navbar.Brand as={Link} to="/">
+        <Navbar.Brand as={Link} to="/"> {/* el logo redirige a la pagina principal */}
           <img
             src={logoImage}
             width="30"
@@ -44,14 +48,14 @@ const NavbarComponent = () => {
           />
           Mi Tienda
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Toggle aria-controls="basic-navbar-nav" /> {/* boton hamburguesa */}
+        <Navbar.Collapse id="basic-navbar-nav">{/* opciones de la hamburguesa */}
           <Nav className="me-auto">
-            {categorias.map(item => (
-              <Nav.Link as={Link} to={`/category/${item}`} key={item}>{item}</Nav.Link>
-            ))}
+            {categorias.map(item => ( 
+              <Nav.Link as={Link} to={`/category/${item}`} key={item}>{item}</Nav.Link> 
+            ))} {/* mapea la constante -categorias- y crea una opcion para cada categoria */}
           </Nav>
-          <CartWidget />
+          <CartWidget /> {/* carrito */}
         </Navbar.Collapse>
       </Container>
     </Navbar>

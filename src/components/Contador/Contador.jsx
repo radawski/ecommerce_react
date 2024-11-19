@@ -23,11 +23,11 @@ const Contador = ({stock, initial, onAdd}) => {
           <Row className="justify-content-center">
             <Col xs={12} className="text-center">
               <Button variant="success" onClick={increment} className="mx-2">
-                Incrementar
+                +
               </Button>
               <h2>{quantity}</h2>
               <Button variant="danger" onClick={decrement} className="mx-2">
-                Decrementar
+                -
               </Button>
             </Col>
           </Row>

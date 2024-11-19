@@ -2,43 +2,59 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import ItemCard from '../itemCard/ItemCard';
 
-export default function ListaDeProductos({ category }) { // Recibe la categoría
-    const [items, setItems] = useState([]);
-    const [cargando, setCargando] = useState(true);
-    const [error, setError] = useState(null);
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../services/firebase/firebaseConfig";
 
+export default function ListaDeProductos({ category }) { // Recibe la categoría
+    const [state, setState] = useState({
+        items: [],
+        cargando: true,
+        error: null
+    });
+
+    
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const response = category 
-                    ? await fetch(`https://fakestoreapi.com/products/category/${category}`) // Filtra por categoría
-                    : await fetch('https://fakestoreapi.com/products');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Estado: ${response.status}`);
-                }
-                const data = await response.json();
-                setItems(data);
-                setCargando(false);
+                const productosRef = collection(db, "productos");
+                const q = category
+                    ? query(productosRef, where("category", "==", category)) // Filtra por categoría
+                    : productosRef;
+
+                const querySnapshot = await getDocs(q); // Obtiene los documentos
+                const productos = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setState({ items: productos, cargando: false, error: null });
             } catch (e) {
-                setError('Error cargando los datos. Por favor, intentar nuevamente más tarde.');
-                setCargando(false);
+                console.error(e.message);
+                setState({
+                    items: [],
+                    cargando: false,
+                    error: "Error cargando los datos. Por favor, intentar nuevamente más tarde.",
+                });
             }
         };
 
         fetchItems();
-    }, [category]); // Agrega category como dependencia
+    }, [category]); // Agrega category como dependencia, el efecto solo se ejecutará cuando el valor de category cambie
 
-    if (cargando) return <div className="text-center mt-5">Cargando...</div>;
-    if (error) return <div className="alert alert-danger mt-5" role="alert">{error}</div>;
+    if (state.cargando) return <div className="text-center mt-5">Cargando...</div>;
+    if (state.error) return <div className="alert alert-danger mt-5" role="alert">{state.error}</div>;
 
     return (
         <Container>
             <Row>
-                {items.map(item => (
-                    <Col key={item.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
-                        <ItemCard item={item} />
-                    </Col>
-                ))}
+                {state.items.length > 0 ? (
+                    state.items.map((item) => (
+                        <Col key={item.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+                            <ItemCard item={item} />
+                        </Col>
+                    ))
+                ) : (
+                    <div>No hay productos disponibles.</div>
+                )}
             </Row>
         </Container>
     );

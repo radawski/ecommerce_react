@@ -1,70 +1,23 @@
-# Getting Started with Create React App
+# Documentacion
+### Características principales:
+1. **Visualización de productos:**
+   - Los productos se cargan desde **Cloud Firestore**, organizados en categorías.
+   - Incluye un detalle individual de cada producto, que muestra su información relevante.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+2. **Carrito de compras:**
+   - Los usuarios pueden agregar productos al carrito desde las páginas de listado o detalle.
+   - El carrito permite:
+     - Ver el total de productos y el precio acumulado.
+     - Modificar la cantidad de productos.
+     - Eliminar productos individualmente o vaciar todo el carrito.
 
-## Available Scripts
+3. **Interfaz amigable:**
+   - Utiliza **React-Bootstrap** para estilizar la interfaz con un diseño limpio y responsivo.
+   - Un ícono de carrito visible (o escondido si está vacío) muestra la cantidad total de productos.
 
-In the project directory, you can run:
+4. **Navegación fluida:**
+   - Implementa **react-router-dom** para navegar entre categorías, detalles de productos, carrito y checkout.
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+5. **Checkout:**
+   - Permite a los usuarios confirmar su compra una vez finalizado el proceso de selección de productos.
+   - Se guarda la informacion de compra en la base de datos y se informa el ID correspondiente. 
